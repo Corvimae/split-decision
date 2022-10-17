@@ -1,0 +1,67 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx", ".d.ts"]
+    }
+  },
+  "rules": {
+    "react/prop-types": "off",
+    "max-len": "off",
+    "import/prefer-default-export": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "mjs": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "object-curly-newline": ["error", { "consistent": true }],
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "arrow-parens": ["error", "as-needed"],
+    "no-confusing-arrow": "off",
+    "no-trailing-spaces": ["error", { "skipBlankLines": true }],
+    "no-console": ["error", { "allow": ["warn", "error", "info" ] }],
+    "no-bitwise": "off",
+    "newline-per-chained-call": "off",
+    "react/jsx-filename-extension": ["error", { "extensions": [".tsx", ".jsx"] }],
+    "react/no-array-index-key": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/function-component-definition": "off",
+    "react/require-default-props": "off",
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "assert": "htmlFor"
+      }
+    ],
+    "jsx-a11y/anchor-is-valid": "off"
+  }
+}

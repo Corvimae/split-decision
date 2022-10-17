@@ -1,0 +1,140 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// next-auth
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                  String              @id @default(cuid())
+  name                String?
+  email               String?             @unique
+  emailVerified       DateTime?
+  pronouns            String?
+  showPronouns        Boolean             @default(true)
+  showSubmissions     Boolean             @default(true)
+  displayName         String?
+  image               String?
+  isAdmin             Boolean             @default(false)
+  accounts            Account[]
+  sessions            Session[]
+  gameSubmissions     GameSubmission[]
+  eventAvailabilities EventAvailability[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Submissions
+
+model Event {
+  id                        String              @id @unique @default(cuid())
+  eventName                 String
+  gameSubmissionPeriodStart DateTime
+  gameSubmissionPeriodEnd   DateTime
+  eventStart                DateTime
+  eventDays                 Int                 @default(3)
+  startTime                 Int                 @default(9)
+  endTime                   Int                 @default(23)
+  visible                   Boolean             @default(false)
+  runStatusVisible          Boolean             @default(false)
+  maxSubmissions            Int                 @default(5)
+  maxCategories             Int                 @default(5)
+  genres                    String[]            @default([])
+  gameSubmissions           GameSubmission[]
+  eventAvailabilities       EventAvailability[]
+  createdAt                 DateTime?           @default(now())
+  updatedAt                 DateTime?           @updatedAt
+}
+
+model EventAvailability {
+  id        String     @id @unique @default(cuid())
+  userId    String
+  eventId   String
+  slots     DateTime[]
+  user      User       @relation(fields: [userId], references: [id])
+  event     Event      @relation(fields: [eventId], references: [id])
+  createdAt DateTime?  @default(now())
+  updatedAt DateTime?  @updatedAt
+
+  @@unique([userId, eventId])
+}
+
+model GameSubmission {
+  id             String                   @id @unique @default(cuid())
+  userId         String
+  eventId        String
+  gameTitle      String
+  platform       String
+  description    String
+  primaryGenre   String                   @default("Other")
+  secondaryGenre String?
+  technicalNotes String?
+  contentWarning String?
+  flashingLights Boolean                  @default(false)
+  user           User                     @relation(fields: [userId], references: [id])
+  categories     GameSubmissionCategory[]
+  event          Event                    @relation(fields: [eventId], references: [id])
+  createdAt      DateTime?                @default(now())
+  updatedAt      DateTime?                @updatedAt
+}
+
+model GameSubmissionCategory {
+  id               String         @id @unique @default(cuid())
+  gameSubmissionId String
+  categoryName     String
+  videoURL         String
+  estimate         String
+  description      String
+  runStatus        RunStatus      @default(Pending)
+  gameSubmission   GameSubmission @relation(fields: [gameSubmissionId], references: [id], onDelete: Cascade)
+  createdAt        DateTime?      @default(now())
+  updatedAt        DateTime?      @updatedAt
+}
+
+enum RunStatus {
+  Accpeted
+  Rejected
+  Backup
+  Bonus
+  Pending
+}

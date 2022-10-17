@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Event" ADD COLUMN     "maxCategories" INTEGER NOT NULL DEFAULT 5,
+ADD COLUMN     "maxSubmissions" INTEGER NOT NULL DEFAULT 5;
