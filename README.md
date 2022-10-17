@@ -118,3 +118,13 @@ _These are kind of a mess, sorry!_
 `colors.error.text` - The color of error description text.
 
 `colors.error.dark.background` - The background color of "danger" buttons, such as those for deleting submissions.
+
+## FAQ
+
+#### How do I add an admin user?
+
+In the `User` table in the database, set the `isAdmin` field to true.
+
+#### How do I export the submissions from an event?
+
+Right now, you need to grab them from the database manually. I plan to add a CSV export shortly.
