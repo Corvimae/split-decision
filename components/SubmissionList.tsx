@@ -33,6 +33,16 @@ const SubmissionDetails: React.FC<SubmissionDetailsProps> = ({ submission }) => 
         <GameDetailsValueWrap>{submission.description}</GameDetailsValueWrap>
       </GameDetails>
     </GameDetailsRow>
+    {submission.contentWarning && (
+      <GameDetailsRow>
+        <b>Content warning:</b>&nbsp;{submission.contentWarning}
+      </GameDetailsRow>
+    )}
+    {submission.flashingLights && (
+      <GameDetailsRow>
+        <b>Game contains flashing lights.</b>
+      </GameDetailsRow>
+    )}
     {submission.categories.length === 0 && (
       <Alert>No categories submitted.</Alert>
     )}
