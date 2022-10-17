@@ -61,6 +61,8 @@ NEXTAUTH_URL=https://submissions.mysite.com/
 
 In local development, this environment variable is not required.
 
+Set the `NEXTAUTH_SECRET` environment variable to anything you like, as long as it's not easily guessable.
+
 ## Configuration
 
 Various aspects of the site can be configured in the root-level `config.json` file. You can copy the provided `config-base.json` provided, rename it to `config.json`, and edit in your own values.

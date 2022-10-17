@@ -41,7 +41,8 @@ const EventItem: React.FC<EventItemProps> = ({ event, onClick }) => {
       <EventItemButton onClick={handleClick}>
         <EventItemContainer>
           <EventInfo>
-            {event.eventName} <SubmissionTime>Begins on {eventStart}</SubmissionTime>
+            {event.eventName}{!event.visible && <i>&nbsp;(Hidden)</i>}
+            <SubmissionTime>Begins on {eventStart}</SubmissionTime>
           </EventInfo>
           <EventStartDate>{submissionTime}</EventStartDate>
         </EventItemContainer>

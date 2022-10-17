@@ -12,9 +12,9 @@ export default async function handle(req: Request, res: Response) {
 
       const isAdmin = session?.user.isAdmin ?? false;
 
-      const filter = isAdmin && req.query.includeHidden ? {
+      const filter = isAdmin && req.query.includeHidden ? undefined : {
         where: { visible: true },
-      } : undefined;
+      };
 
       const events = await prisma.event.findMany(filter);
 

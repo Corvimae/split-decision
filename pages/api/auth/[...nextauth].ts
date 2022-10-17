@@ -15,6 +15,8 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ profile }) {
+      console.info('id', process.env.DISCORD_SERVER_ID);
+
       if (!process.env.DISCORD_SERVER_ID) return true;
       
       try {
