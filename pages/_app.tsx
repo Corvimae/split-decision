@@ -93,6 +93,12 @@ const Header = styled.div`
   background-color: ${SiteConfig.colors.accents.link};
   font-size: 1.5rem;
   align-items: center;
+
+  @media screen and (max-width: 500px) {
+    a {
+      font-size: 1.25rem;
+    }
+  }
 `;
 
 const HeaderActionsContainer = styled.div`

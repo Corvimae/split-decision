@@ -45,6 +45,10 @@ const Container = styled.div`
   flex-direction: row;
   overflow-y: hidden;
   color: #fff;
+
+  @media screen and (max-width: 500px) {
+    flex-direction: column-reverse;
+  }
 `;
 
 const EventsColumn = styled.div`
@@ -65,6 +69,11 @@ const HeroImage = styled.div<{ src: string }>`
   height: 400px;
   background-image: url(${({ src }) => src});
   background-size: cover;
+
+  @media screen and (max-width: 600px) {
+    max-width: 100%;
+  }
+
 `;
 
 const WelcomeMessage = styled.h1`

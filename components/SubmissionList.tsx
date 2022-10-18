@@ -15,7 +15,7 @@ interface SubmissionDetailsProps {
 const SubmissionDetails: React.FC<SubmissionDetailsProps> = ({ submission }) => (
   <SubmissionDetailsContainer>
     <GameTitle>{submission.gameTitle}</GameTitle>
-    <GameDetailsRow>
+    <GameDetailsGridRow>
       <GameDetails>
         <GameDetailsKey>Genre</GameDetailsKey>
         <div>{submission.primaryGenre}</div>
@@ -32,7 +32,7 @@ const SubmissionDetails: React.FC<SubmissionDetailsProps> = ({ submission }) => 
         <GameDetailsKey>Description</GameDetailsKey>
         <GameDetailsValueWrap>{submission.description}</GameDetailsValueWrap>
       </GameDetails>
-    </GameDetailsRow>
+    </GameDetailsGridRow>
     {submission.contentWarning && (
       <GameDetailsRow>
         <b>Content warning:</b>&nbsp;{submission.contentWarning}
@@ -152,13 +152,16 @@ const GameDetailsRow = styled.div`
   margin-bottom: 0.5rem;
 `;
 
+const GameDetailsGridRow = styled.div`
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(4, fit-content(100%));
+  grid-gap: 0.5rem;
+`;
+
 const GameDetails = styled.div`
   display: flex;
   flex-direction: column;
-
-  & + & {
-    margin-left: 2rem;
-  }
 `;
 
 const GameDetailsKey = styled.div`
@@ -169,7 +172,7 @@ const GameDetailsKey = styled.div`
 `;
 
 const GameDetailsValueWrap = styled.div`
-  word-wrap: break-word;
+  word-break: break-word;
 `;
 
 const Username = styled.h2`

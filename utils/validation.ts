@@ -3,7 +3,7 @@ import { GameSubmission, GameSubmissionCategory, User } from '@prisma/client';
 import Joi from 'joi';
 import { EventWithStringDates } from './models';
 
-const TIMESTAMP_REGEX = /^(?:(?:([01]?\d|2[0-3]):)?([0-5]\d):)?([0-5]\d)$/;
+const TIMESTAMP_REGEX = /^(?:(?:([0-9]*?\d|2[0-9]):)?([0-5]\d):)?([0-5]\d)$/;
 
 const GameSubmissionCategoryValidationSchema = Joi.object<GameSubmissionCategory>({
   categoryName: Joi.string().required().max(100).messages({

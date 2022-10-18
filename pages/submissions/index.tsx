@@ -110,6 +110,10 @@ const Container = styled.div`
 const ColumnContainer = styled.div`
   display: flex;
   flex-direction: row;
+
+  @media screen and (max-width: 500px) {
+    flex-direction: column-reverse;
+  }
 `;
 
 const WelcomeMessageContainer = styled.div`
@@ -130,7 +134,6 @@ const ProfileColumn = styled.div`
   flex-grow: 1;
   align-self: stretch;
   padding: 0 1rem;
-
 `;
 
 const SubmissionsColumn = styled.div`
@@ -139,9 +142,15 @@ const SubmissionsColumn = styled.div`
   padding: 0 1rem;
   flex-grow: 2;
   align-self: stretch;
+
   & p {
     font-size: 1.5rem;
     margin: 0.5rem 0;
+  }
+
+  @media screen and (max-width: 500px) {
+    border-bottom: 1px solid ${SiteConfig.colors.accents.separator};
+    padding-bottom: 1rem;
   }
 `;
 
@@ -149,4 +158,8 @@ const WelcomeMessage = styled.h1`
   font-size: 3.5rem;
   font-weight: 700;
   margin-bottom: 0;
+
+  @media screen and (max-width: 500px) {
+    margin-top: 1rem;
+  }
 `;

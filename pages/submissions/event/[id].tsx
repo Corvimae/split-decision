@@ -175,7 +175,8 @@ const EventDetails: NextPage<EventDetailsProps> = ({ event, submissions: submiss
                 <li key={submission.id}>
                   <ExistingSubmissionButton onClick={() => allowSubmissions && setActiveSubmission(submission)}>
                     <ExistingSubmissionInfo>
-                      {submission.gameTitle} <ExistingSubmissionCategoryCount>{submission.categories.length} {submission.categories.length === 1 ? 'category' : 'categories'}</ExistingSubmissionCategoryCount>
+                      <ExistingSubmissionTitle>{submission.gameTitle}</ExistingSubmissionTitle>
+                      <ExistingSubmissionCategoryCount>{submission.categories.length} {submission.categories.length === 1 ? 'category' : 'categories'}</ExistingSubmissionCategoryCount>
                     </ExistingSubmissionInfo>
                   </ExistingSubmissionButton>
                 </li>
@@ -283,6 +284,10 @@ const Container = styled.div`
 const ColumnContainer = styled.div`
   display: flex;
   flex-direction: row;
+
+  @media screen and (max-width: 500px) {
+    flex-direction: column;
+  }
 `;
 
 const WelcomeMessageContainer = styled.div`
@@ -303,6 +308,12 @@ const ExistingSubmissionsColumn = styled.div<{ expand: boolean }>`
   flex-grow: 1;
   align-self: stretch;
   padding: 1rem;
+
+  @media screen and (max-width: 500px) {
+    max-width: 100%;
+    border-bottom: 1px solid ${SiteConfig.colors.accents.separator};
+    padding-bottom: 1rem;
+  }
 `;
 
 const EditorColumn = styled.div`
@@ -346,8 +357,17 @@ const ExistingSubmissionInfo = styled.div`
   justify-content: space-between;
 `;
 
-const ExistingSubmissionCategoryCount = styled.span`
-  display: inline-block;
+const ExistingSubmissionTitle = styled.div`
+  display: flex;
+  align-items: center;
+  word-break: break-word;
+  text-align: left;
+  padding-right: 0.5rem;
+`;
+
+const ExistingSubmissionCategoryCount = styled.div`
+  display: flex;
+  align-items: center;
   margin-left: auto;
 `;
 

@@ -153,6 +153,10 @@ const Container = styled.div`
 const ColumnContainer = styled.div`
   display: flex;
   flex-direction: row;
+  
+  @media screen and (max-width: 500px) {
+    flex-direction: column;
+  }
 `;
 
 const WelcomeMessageContainer = styled.div`
@@ -174,6 +178,12 @@ const EventColumn = styled.div`
   flex-grow: 1;
   align-self: stretch;
   padding: 1rem;
+
+  @media screen and (max-width: 500px) {
+    max-width: 100%;
+    border-bottom: 1px solid ${SiteConfig.colors.accents.separator};
+    padding-bottom: 1rem;
+  }
 `;
 
 const EditorColumn = styled.div`
