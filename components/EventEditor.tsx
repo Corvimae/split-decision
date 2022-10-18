@@ -110,7 +110,12 @@ export const EventEditor: React.FC<EventEditorProps> = ({ event: eventRecord, on
         Event Information
         {eventRecord.id && (
           <TitleActions>
-            <DeleteEventButton onClick={handleDelete}>Delete</DeleteEventButton>
+            <EventLink href={`/api/events/${eventRecord.id}/download`} target="_blank" rel="noopener noreferrer">
+              <EventAction>
+                Export CSV
+              </EventAction>
+            </EventLink>
+            <EventAction variant="danger" onClick={handleDelete}>Delete</EventAction>
           </TitleActions>
         )}
       </Instructions>
@@ -255,9 +260,19 @@ const TitleActions = styled.div`
   margin-left: auto;
 `;
 
-const DeleteEventButton = styled(Button)`
+const EventAction = styled(Button)`
   width: unset;
   margin-left: auto;
   font-size: 1.25rem;
   margin: 0;
+
+  & + & {
+    margin-left: 0.5rem;
+  }
+`;
+
+const EventLink = styled.a`
+  & + ${EventAction} {
+    margin-left: 0.5rem;
+  }
 `;

@@ -14,12 +14,6 @@ export default async function handle(req: Request, res: Response) {
   
         return;
       }
-
-      if (!session.user.isAdmin) {
-        res.status(401).json({ message: 'You are not an administrator.' });
-  
-        return;
-      }
       
       if (!req.query.id) {
         res.status(400).json({ message: 'Event ID is required' });
