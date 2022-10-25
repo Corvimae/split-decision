@@ -23,7 +23,9 @@ function renderSelectorTime(_time: Date): React.ReactNode {
   return <div />;
 }
 
-function renderSelectorDate(date: Date): React.ReactNode {
+function renderSelectorDate(date: Date | null): React.ReactNode {
+  if (!date) return <div />;
+
   return (
     <SelectorDate>{format(date, 'MMM. d')}</SelectorDate>
   );
