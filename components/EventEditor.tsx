@@ -182,7 +182,7 @@ export const EventEditor: React.FC<EventEditorProps> = ({ event: eventRecord, on
         />
       </FormItem>
       <FormItem>
-        <Label htmlFor="gameSubmissionPeriodStart">Submission Period Start Date</Label>
+        <Label htmlFor="gameSubmissionPeriodStart">Submission Period Start (UTC)</Label>
         <TextInput
           id="gameSubmissionPeriodStart"
           type="text"
@@ -192,7 +192,7 @@ export const EventEditor: React.FC<EventEditorProps> = ({ event: eventRecord, on
         />
       </FormItem>
       <FormItem>
-        <Label htmlFor="gameSubmissionPeriodEnd">Submission Period End Date</Label>
+        <Label htmlFor="gameSubmissionPeriodEnd">Submission Period End (UTC)</Label>
         <TextInput
           id="gameSubmissionPeriodEnd"
           type="text"

@@ -18,6 +18,7 @@ import { areSubmissionsOpen } from '../../../utils/eventHelpers';
 import { SubmissionList } from '../../../components/SubmissionList';
 import { prepareRecordForTransfer, prepareSubmissionForTransfer, SubmissionWithCategories } from '../../../utils/models';
 import { SiteConfig } from '../../../utils/siteConfig';
+import { useOnMount } from '../../../utils/hooks';
 
 function renderSelectorTime(_time: Date): React.ReactNode {
   return <div />;
@@ -82,10 +83,9 @@ const EventDetails: NextPage<EventDetailsProps> = ({ event, submissions: submiss
     ...availabilityFromServer,
     slots: availabilityFromServer.slots.map(slot => fromServerTime(parseISO(slot))),
   }));
+  const [submissionCloseTime, setSubmissionCloseTime] = useState('');
 
   const [activeSubmission, setActiveSubmission] = useState<SubmissionWithCategories | null>(null);
-
-  const submissionCloseTime = useMemo(() => getEventSubmissionTimeString(event), [event]);
 
   const handleNewSubmission = useCallback(() => {
     setActiveSubmission(createEmptySubmission(event));
@@ -131,6 +131,11 @@ const EventDetails: NextPage<EventDetailsProps> = ({ event, submissions: submiss
 
   const allowSubmissions = useMemo(() => areSubmissionsOpen(event), [event]);
 
+  useOnMount(() => {
+    // Prevent a SSR hydration error when less than 1 minute remains.
+    setSubmissionCloseTime(getEventSubmissionTimeString(event));
+  });
+
   const remainingSubmissions = event.maxSubmissions - submissions.length;
 
   return (
@@ -145,27 +150,28 @@ const EventDetails: NextPage<EventDetailsProps> = ({ event, submissions: submiss
         <EventStartTime>Starts on {intlFormat(parseISO((event.eventStart as unknown) as string))}</EventStartTime>
         <SubmissionCloseTime>{submissionCloseTime}</SubmissionCloseTime>
       </WelcomeMessageContainer>
-      <ScheduleSelectorContainer>
-        <Title>Availability</Title>
-        <p>All times are in <b>Eastern Standard Time</b>.</p>
-        <ScheduleSelector
-          startDate={event.eventStart}
-          minTime={event.startTime}
-          maxTime={event.endTime + 1}
-          numDays={event.eventDays}
-          selection={availability.slots}
-          onChange={handleUpdateAvailability}
-          renderTimeLabel={renderSelectorTime}
-          renderDateLabel={renderSelectorDate}
-          renderDateCell={renderSelectorDateCell}
-        />
-      </ScheduleSelectorContainer>
+      {allowSubmissions && (
+        <ScheduleSelectorContainer>
+          <Title>Availability</Title>
+          <p>All times are in <b>Eastern Standard Time</b>.</p>
+          <ScheduleSelector
+            startDate={event.eventStart}
+            minTime={event.startTime}
+            maxTime={event.endTime + 1}
+            numDays={event.eventDays}
+            selection={availability.slots}
+            onChange={handleUpdateAvailability}
+            renderTimeLabel={renderSelectorTime}
+            renderDateLabel={renderSelectorDate}
+            renderDateCell={renderSelectorDateCell}
+          />
+        </ScheduleSelectorContainer>
+      )}
       <ColumnContainer>
         <ExistingSubmissionsColumn expand={!allowSubmissions}>
-          <Title>Submissions</Title>
+          <Title>My Submissions</Title>
           {!allowSubmissions && (
             <div>
-              <Title>My Submissions</Title>
               {submissions.length === 0 && <Alert>You have no submissions for {event.eventName}.</Alert>}
               {submissions.length > 0 && <SubmissionList submissions={submissions} />}
             </div>

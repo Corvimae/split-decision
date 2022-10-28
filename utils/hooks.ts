@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 
 interface IsSaveableOptions<T> {
   requestOptions?: RequestInit;
@@ -40,4 +40,20 @@ export function useSaveable<T, U>(endpoint: string, canSave: boolean, options: I
   }, [options, canSave, endpoint, isSaving]);
 
   return [save, isSaving, error];
+}
+
+export function useOnMount(callback: React.EffectCallback): void {
+  const savedCallback = useRef<React.EffectCallback>();
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  });
+
+  useEffect(() => {
+    const onDismount = savedCallback.current?.();
+
+    return (): void => {
+      if (onDismount) onDismount();
+    };
+  }, []);
 }

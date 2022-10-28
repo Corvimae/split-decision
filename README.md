@@ -69,7 +69,7 @@ Various aspects of the site can be configured in the root-level `config.json` fi
 
 `heroImage` (string): The URL of the image to display on the home page. This dimensions of this image should be 600x400px.
 
-`embedImage` (string): The URL of the image to display in embeds. The dimensions of this image should be 1200x630px.
+`embedImage` (string): The URL of the image to display in embeds. The dimensions of this image should be 1200x630px. **This must be an absolute URL.**
 
 `favicon` (string): The URL of the site favicon. This should be a square `.ico`.
 
