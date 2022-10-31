@@ -71,9 +71,13 @@ const HeroImage = styled.div<{ src: string }>`
   background-size: cover;
 
   @media screen and (max-width: 600px) {
-    max-width: 100%;
+    width: 100%;
+    height: auto;
+    background-position: center top;
+    background-size: 100% auto;
+    box-sizing: content-box;
+    padding-bottom: 66%;
   }
-
 `;
 
 const WelcomeMessage = styled.h1`
