@@ -156,7 +156,7 @@ const GameDetailsGridRow = styled.div`
   display: grid;
   width: 100%;
   grid-template-columns: repeat(4, fit-content(100%));
-  grid-gap: 0.5rem;
+  grid-gap: 1.5rem;
 `;
 
 const GameDetails = styled.div`
