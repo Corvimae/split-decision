@@ -91,8 +91,8 @@ model EventAvailability {
   userId    String
   eventId   String
   slots     DateTime[]
-  user      User       @relation(fields: [userId], references: [id])
-  event     Event      @relation(fields: [eventId], references: [id])
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event     Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
   createdAt DateTime?  @default(now())
   updatedAt DateTime?  @updatedAt
 
@@ -111,9 +111,9 @@ model GameSubmission {
   technicalNotes String?
   contentWarning String?
   flashingLights Boolean                  @default(false)
-  user           User                     @relation(fields: [userId], references: [id])
+  user           User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
   categories     GameSubmissionCategory[]
-  event          Event                    @relation(fields: [eventId], references: [id])
+  event          Event                    @relation(fields: [eventId], references: [id], onDelete: Cascade)
   createdAt      DateTime?                @default(now())
   updatedAt      DateTime?                @updatedAt
 }
