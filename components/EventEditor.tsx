@@ -8,6 +8,9 @@ import { useSaveable } from '../utils/hooks';
 import { useValidatedState, ValidationSchemas } from '../utils/validation';
 import { Button, FormItem, Label, TextInput, Alert, ToggleSwitch } from './layout';
 import { SiteConfig } from '../utils/siteConfig';
+import { useConfirmationPrompt } from '../utils/ConfirmationPrompt';
+
+const DELETE_PROPMT_MESSAGE = 'Are you sure you want to delete this event? This cannot be undone!';
 
 const SAVE_OPTS = {
   requestOptions: {
@@ -46,6 +49,8 @@ export const EventEditor: React.FC<EventEditorProps> = ({ event: eventRecord, on
 
     onDelete(eventRecord.id);
   }, [onDelete, eventRecord.id]);
+
+  const [deletePrompt, promptDeletion] = useConfirmationPrompt(DELETE_PROPMT_MESSAGE, handleDelete);
 
   const handleUpdateEventName = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setEventField('eventName', event.target.value);
@@ -106,6 +111,7 @@ export const EventEditor: React.FC<EventEditorProps> = ({ event: eventRecord, on
 
   return (
     <Container>
+      {deletePrompt}
       <Instructions>
         Event Information
         {eventRecord.id && (
@@ -115,7 +121,7 @@ export const EventEditor: React.FC<EventEditorProps> = ({ event: eventRecord, on
                 Export CSV
               </EventAction>
             </EventLink>
-            <EventAction variant="danger" onClick={handleDelete}>Delete</EventAction>
+            <EventAction variant="danger" onClick={promptDeletion}>Delete</EventAction>
           </TitleActions>
         )}
       </Instructions>
