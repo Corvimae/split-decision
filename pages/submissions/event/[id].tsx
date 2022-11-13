@@ -19,6 +19,9 @@ import { SubmissionList } from '../../../components/SubmissionList';
 import { prepareRecordForTransfer, prepareSubmissionForTransfer, SubmissionWithCategories } from '../../../utils/models';
 import { SiteConfig } from '../../../utils/siteConfig';
 import { useOnMount } from '../../../utils/hooks';
+import { useConfirmationPrompt } from '../../../utils/ConfirmationPrompt';
+
+const CONFIRMATION_PROMPT_MESSAGE = 'Are you sure you want to start a new submission? You have not saved this submission and will lose your progress.';
 
 function renderSelectorTime(_time: Date): React.ReactNode {
   return <div />;
@@ -91,6 +94,16 @@ const EventDetails: NextPage<EventDetailsProps> = ({ event, submissions: submiss
     setActiveSubmission(createEmptySubmission(event));
   }, [event]);
 
+  const [newSubmissionConfirmationPrompt, promptNewSubmission] = useConfirmationPrompt(CONFIRMATION_PROMPT_MESSAGE, handleNewSubmission);
+
+  const handlePromptNewSubmission = useCallback(() => {
+    if (activeSubmission === null) {
+      handleNewSubmission();
+    } else {
+      promptNewSubmission();
+    }
+  }, [handleNewSubmission, promptNewSubmission, activeSubmission]);
+
   const handleSubmissionSave = useCallback((submission: SubmissionWithCategories) => {
     const [updatedList, wasUpdated] = submissions.reduce<[SubmissionWithCategories[], boolean]>(([acc, updated], item) => {
       if (item.id === submission.id) return [[...acc, submission], true];
@@ -140,6 +153,7 @@ const EventDetails: NextPage<EventDetailsProps> = ({ event, submissions: submiss
 
   return (
     <Container>
+      {newSubmissionConfirmationPrompt}
       <WelcomeMessageContainer>
         <Link href="/submissions">
           <ReturnToProfile>Return to my profile</ReturnToProfile>
@@ -193,7 +207,7 @@ const EventDetails: NextPage<EventDetailsProps> = ({ event, submissions: submiss
                 <Alert>You have not submitted anything to {event.eventName}.</Alert>
               )}
               {allowSubmissions && (
-                <AddGameButton onClick={handleNewSubmission} disabled={remainingSubmissions === 0}>
+                <AddGameButton onClick={handlePromptNewSubmission} disabled={remainingSubmissions === 0}>
                   Add game ({remainingSubmissions} remaining)
                 </AddGameButton>
               )}
