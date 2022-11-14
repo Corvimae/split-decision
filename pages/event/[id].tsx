@@ -17,7 +17,7 @@ interface EventDetailsProps {
 }
 
 const EventDetails: NextPage<EventDetailsProps> = ({ event, submissions }) => {
-  const submissionCloseTime = useMemo(() => getEventSubmissionTimeString(event), [event]);
+  const submissionCloseTime = useMemo(() => getEventSubmissionTimeString(event, true), [event]);
     
   return (
     <Container>

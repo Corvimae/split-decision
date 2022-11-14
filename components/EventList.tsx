@@ -2,12 +2,22 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Event } from '@prisma/client';
 import { intlFormat, intlFormatDistance } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
 import { Alert } from './layout';
 import { areSubmissionsOpen, forceAsDate, isAfterSubmissionPeriod, isBeforeSubmissionPeriod } from '../utils/eventHelpers';
 import { SiteConfig } from '../utils/siteConfig';
 
-export function getEventSubmissionTimeString(event: Event) {
+const ABSOLUTE_FORMAT_OPTIONS = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+} as const;
+
+export function getEventSubmissionTimeString(event: Event, includeAbsoluteDate = false) {
   const now = new Date().getTime();
+  const localTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const startDate = forceAsDate(event.gameSubmissionPeriodStart);
   const endDate = forceAsDate(event.gameSubmissionPeriodEnd);
 
@@ -16,10 +26,14 @@ export function getEventSubmissionTimeString(event: Event) {
   }
 
   if (isBeforeSubmissionPeriod(event)) {
-    return `Submissions open ${intlFormatDistance(startDate, now)}`;
+    const absoluteDate = includeAbsoluteDate ? ` (${intlFormat(utcToZonedTime(startDate, localTimezone), ABSOLUTE_FORMAT_OPTIONS)})` : '';
+
+    return `Submissions open ${intlFormatDistance(startDate, now)}${absoluteDate}`;
   }
 
-  return `Submissions close ${intlFormatDistance(endDate, now)}`;
+  const absoluteDate = includeAbsoluteDate ? ` (${intlFormat(utcToZonedTime(endDate, localTimezone), ABSOLUTE_FORMAT_OPTIONS)})` : '';
+
+  return `Submissions close ${intlFormatDistance(endDate, now)}${absoluteDate}`;
 }
 
 interface EventItemProps {

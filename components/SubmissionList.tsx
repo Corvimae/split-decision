@@ -28,10 +28,10 @@ const SubmissionDetails: React.FC<SubmissionDetailsProps> = ({ submission }) => 
         <GameDetailsKey>Platform</GameDetailsKey>
         <div>{submission.platform}</div>
       </GameDetails>
-      <GameDetails>
+      <GameDetailsDescription>
         <GameDetailsKey>Description</GameDetailsKey>
         <GameDetailsValueWrap>{submission.description}</GameDetailsValueWrap>
-      </GameDetails>
+      </GameDetailsDescription>
     </GameDetailsGridRow>
     {submission.contentWarning && (
       <GameDetailsRow>
@@ -65,7 +65,7 @@ const SubmissionDetails: React.FC<SubmissionDetailsProps> = ({ submission }) => 
                 </a>
               </td>
               <NumericCell width="10%">{category.estimate}</NumericCell>
-              <td>{category.description}</td>
+              <DescriptionCell>{category.description}</DescriptionCell>
               {/* <td width="10%">{category.runStatus}</td> */}
             </tr>
           ))}
@@ -157,11 +157,22 @@ const GameDetailsGridRow = styled.div`
   width: 100%;
   grid-template-columns: repeat(4, fit-content(100%));
   grid-gap: 1.5rem;
+
+  @media screen and (max-width: 600px) {
+    grid-template-columns: repeat(3, fit-content(100%));
+  }
 `;
 
 const GameDetails = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const GameDetailsDescription = styled(GameDetails)`
+  @media screen and (max-width: 600px) {
+    grid-column: 1 / -1;
+    margin-bottom: 1rem;
+  }  
 `;
 
 const GameDetailsKey = styled.div`
@@ -195,4 +206,8 @@ const NumericCell = styled.td`
 
 const FlashingLightsRow = styled(GameDetailsRow)`
   margin-top: 0.5rem;
+`;
+
+const DescriptionCell = styled.td`
+  word-break: break-word;  
 `;
