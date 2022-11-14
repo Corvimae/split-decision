@@ -39,9 +39,9 @@ const SubmissionDetails: React.FC<SubmissionDetailsProps> = ({ submission }) => 
       </GameDetailsRow>
     )}
     {submission.flashingLights && (
-      <GameDetailsRow>
+      <FlashingLightsRow>
         <b>Game contains flashing lights.</b>
-      </GameDetailsRow>
+      </FlashingLightsRow>
     )}
     {submission.categories.length === 0 && (
       <Alert>No categories submitted.</Alert>
@@ -191,4 +191,8 @@ const UserSubmissions = styled.div`
 
 const NumericCell = styled.td`
   font-variant-numeric: tabular-nums;
+`;
+
+const FlashingLightsRow = styled(GameDetailsRow)`
+  margin-top: 0.5rem;
 `;
