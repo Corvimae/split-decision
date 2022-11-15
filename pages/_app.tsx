@@ -114,5 +114,6 @@ const PageContent = styled.div`
 
 const LoginButton = styled(Button)`
   font-size: 1rem;
-  padding: 0.125rem 1rem;
+  padding: 0.25rem 1.5rem;
+  line-height: 1;
 `;
