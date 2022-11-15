@@ -220,12 +220,11 @@ export const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ toggled, onChange, c
 };
 
 export const ButtonElement = styled.button`
-  height: 2.75rem;
   border: none;
   background-color: ${SiteConfig.colors.accents.control};
   color: #fff;
   font-family: inherit;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   padding: 0.5rem 0.5rem;
   text-align: center;
   border-radius: 1.375rem;

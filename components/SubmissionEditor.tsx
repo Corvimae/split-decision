@@ -266,6 +266,7 @@ const CategoryList = styled.ul`
 const FormItemWithDivider = styled(FormItem)`
   border-top: 1px solid ${SiteConfig.colors.accents.separator};
   padding-top: 1rem;
+  margin-top: 1rem;
 `;
 
 const TitleActions = styled.div`

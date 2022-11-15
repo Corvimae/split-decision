@@ -34,14 +34,14 @@ const SubmissionDetails: React.FC<SubmissionDetailsProps> = ({ submission }) => 
       </GameDetailsDescription>
     </GameDetailsGridRow>
     {submission.contentWarning && (
-      <GameDetailsRow>
+      <SubmissionWarningRow>
         <b>Content warning:</b>&nbsp;{submission.contentWarning}
-      </GameDetailsRow>
+      </SubmissionWarningRow>
     )}
     {submission.flashingLights && (
-      <FlashingLightsRow>
+      <SubmissionWarningRow>
         <b>Game contains flashing lights.</b>
-      </FlashingLightsRow>
+      </SubmissionWarningRow>
     )}
     {submission.categories.length === 0 && (
       <Alert>No categories submitted.</Alert>
@@ -113,6 +113,7 @@ const Container = styled.div`
 
 const CategoryTable = styled.table`
   border-collapse: collapse;
+  margin-top: 0.5rem;
   
   & th,
   & td {
@@ -123,6 +124,7 @@ const CategoryTable = styled.table`
   & th {
     text-align: left;
     background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
   }
 
   & tr:nth-of-type(2n) td {
@@ -204,7 +206,7 @@ const NumericCell = styled.td`
   font-variant-numeric: tabular-nums;
 `;
 
-const FlashingLightsRow = styled(GameDetailsRow)`
+const SubmissionWarningRow = styled(GameDetailsRow)`
   margin-top: 0.5rem;
 `;
 
