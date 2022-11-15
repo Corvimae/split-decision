@@ -19,6 +19,11 @@ export function useConfirmationPrompt(message: string, onConfirm: () => void): U
     setIsVisible(false);
   }, []);
 
+  const handleConfirm = useCallback(() => {
+    hideComponent();
+    onConfirm();
+  }, [hideComponent, onConfirm]);
+
   const component = useMemo(() => {
     if (isVisible) {
       return (
@@ -27,7 +32,7 @@ export function useConfirmationPrompt(message: string, onConfirm: () => void): U
             <Message>{message}</Message>
             <Actions>
               <Button onClick={hideComponent}>Cancel</Button>
-              <Button onClick={onConfirm}>Okay</Button>
+              <Button onClick={handleConfirm}>Okay</Button>
             </Actions>
           </ConfirmationPrompt>
         </Backdrop>
@@ -35,7 +40,7 @@ export function useConfirmationPrompt(message: string, onConfirm: () => void): U
     }
      
     return null;
-  }, [message, isVisible, hideComponent, onConfirm]);
+  }, [message, isVisible, hideComponent, handleConfirm]);
 
   return [component, showComponent];
 }
