@@ -25,14 +25,10 @@ interface ExportedSubmissionRow {
   technicalNotes: string;
   contentWarning: string;
   flashingLights: string;
-}
-
-interface ExportedCategory {
-  index: number;
   categoryName: string;
   url: string;
   estimate: string;
-  description: string;
+  categoryDescription: string;
 }
 
 const EXPORTED_SUBMISSION_FIELDS: [keyof ExportedSubmissionRow, string][] = [
@@ -48,14 +44,21 @@ const EXPORTED_SUBMISSION_FIELDS: [keyof ExportedSubmissionRow, string][] = [
   ['technicalNotes', 'Technical Notes'],
   ['contentWarning', 'Content Warning'],
   ['flashingLights', 'Flashing Lights'],
+  ['categoryName', 'Category'],
+  ['url', 'URL'],
+  ['estimate', 'Estimate'],
+  ['categoryDescription', 'Category Description'],
 ];
 
-const EXPORTED_CATEGORY_FIELDS: [keyof ExportedCategory, string][] = [
-  ['categoryName', 'Category $1'],
-  ['url', 'Cat. $1 Video'],
-  ['estimate', 'Cat. $1 Estimate'],
-  ['description', 'Cat. $1 Description'],
-];
+const NO_HOURS_TIMESTAMP_REGEX = /^(?:([0-5]\d):)?([0-5]\d)$/;
+const SINGLE_DIGIT_HOUR_TIMESTAMP_REGEX = /^(?:(?:([0-9]):)([0-5]\d):)?([0-5]\d)$/;
+
+function normalizeEstimate(estimate: string): string {
+  if (estimate.match(SINGLE_DIGIT_HOUR_TIMESTAMP_REGEX)) return `0${estimate}`;
+  if (estimate.match(NO_HOURS_TIMESTAMP_REGEX)) return `00:${estimate}`;
+
+  return estimate;
+}
 
 export default async function handle(req: Request, res: Response) {
   if (req.method === 'GET') {
@@ -113,18 +116,9 @@ export default async function handle(req: Request, res: Response) {
         },
       });
 
-      const baseFields = EXPORTED_SUBMISSION_FIELDS.map(([value, label]) => ({ value, label }));
+      const allFields = EXPORTED_SUBMISSION_FIELDS.map(([value, label]) => ({ value, label }));
 
-      const submissionFields = [...Array(event.maxSubmissions)].flatMap((_, index) => (
-        EXPORTED_CATEGORY_FIELDS.map(([field, label]) => ({
-          value: `${field}${index + 1}`,
-          label: label.replace('$1', (index + 1).toString()),
-        }))
-      ));
-
-      const allFields = [...baseFields, ...submissionFields];
-
-      const formattedSubmissions = submissions.map(submission => {
+      const formattedSubmissions = submissions.flatMap(submission => {
         const availability = availabilities.find(item => item.userId === submission.userId);
 
         let availabilityString = '';
@@ -178,13 +172,13 @@ export default async function handle(req: Request, res: Response) {
           flashingLights: submission.flashingLights,
         };
         
-        return submission.categories.reduce((acc, category, index) => ({
-          ...acc,
-          [`categoryName${index + 1}`]: category.categoryName,
-          [`url${index + 1}`]: category.videoURL,
-          [`estimate${index + 1}`]: category.estimate,
-          [`description${index + 1}`]: category.description,
-        }), baseData);
+        return submission.categories.map(category => ({
+          ...baseData,
+          categoryName: category.categoryName,
+          url: category.videoURL,
+          estimate: normalizeEstimate(category.estimate),
+          categoryDescription: category.description,
+        }));
       });
 
       formattedSubmissions.sort((a, b) => a.userName.localeCompare(b.userName));
